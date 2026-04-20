@@ -104,6 +104,9 @@ if not df.empty:
 
     st.subheader("✏️ Editar registros")
 
+    csv = df.to_csv(index=False, sep=';', encoding='utf-8-sig').encode('utf-8')
+
+# ---------------------------------------- Guardar cambios -----------------------------------
 for i, row in df.iterrows():
     with st.expander(f"{row['empleado']} - ${row['total']:.2f}"):
 
@@ -131,9 +134,7 @@ for i, row in df.iterrows():
             st.success("Registro actualizado")
             st.rerun()    
 
-    csv = df.to_csv(index=False, sep=';', encoding='utf-8-sig').encode('utf-8')
-
-
+# ---------------------------------------- Boton de descarga -----------------------------------------------
     st.download_button(
     "⬇️ Descargar Nómina",
     csv,
@@ -144,7 +145,7 @@ else:
     st.info("No hay registros en ese rango")
 
 # ------------------- BORRAR TODO -------------------
-st.subheader("⚠️ Zona peligrosa")
+st.subheader("Eliminar nominas")
 
 confirmar = st.checkbox("Confirmar eliminación total")
 
