@@ -4,7 +4,7 @@ import pandas as pd
 
 # ------------------- LOGIN -------------------
 USUARIO = "admin"
-CLAVE = "1234"
+CLAVE = "123456"
 
 if "login" not in st.session_state:
     st.session_state.login = False
