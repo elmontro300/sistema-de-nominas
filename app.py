@@ -98,14 +98,48 @@ if not df.empty:
     total_pagado = df["total"].sum()
     st.metric("💰 Total filtrado", f"${total_pagado:.2f}")
 
+    nombre_archivo = st.text_input("ingrese el nombre del archivo")
+    if not nombre_archivo.strip():
+        nombre_archivo = "nomina"
+
+    st.subheader("✏️ Editar registros")
+
+for i, row in df.iterrows():
+    with st.expander(f"{row['empleado']} - ${row['total']:.2f}"):
+
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            nuevo_nombre = st.text_input("Empleado", row["empleado"], key=f"n{row['id']}")
+        
+        with col2:
+            nuevas_horas = st.number_input("Horas", value=row["horas"], key=f"h{row['id']}")
+        
+        with col3:
+            nuevo_pago = st.number_input("Pago/hora", value=row["pago_hora"], key=f"p{row['id']}")
+
+        if st.button("💾 Guardar cambios", key=f"u{row['id']}"):
+            nuevo_total = nuevas_horas * nuevo_pago
+
+            cursor.execute("""
+            UPDATE registros 
+            SET empleado=?, horas=?, pago_hora=?, total=?
+            WHERE id=?
+            """, (nuevo_nombre, nuevas_horas, nuevo_pago, nuevo_total, row["id"]))
+
+            conn.commit()
+            st.success("Registro actualizado")
+            st.rerun()    
+
     csv = df.to_csv(index=False, sep=';', encoding='utf-8-sig').encode('utf-8')
 
+
     st.download_button(
-        "⬇️ Descargar Nómina",
-        csv,
-        "nomina.csv",
-        "text/csv"
-    )    
+    "⬇️ Descargar Nómina",
+    csv,
+    f"{nombre_archivo}.csv",
+    "text/csv"
+)
 else:
     st.info("No hay registros en ese rango")
 
