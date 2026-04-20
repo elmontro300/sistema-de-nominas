@@ -97,11 +97,20 @@ if not df.empty:
 
     total_pagado = df["total"].sum()
     st.metric("💰 Total filtrado", f"${total_pagado:.2f}")
+
+    csv = df.to_csv(index=False, sep=';', encoding='utf-8-sig').encode('utf-8')
+
+    st.download_button(
+        "⬇️ Descargar Nómina",
+        csv,
+        "nomina.csv",
+        "text/csv"
+    )    
 else:
     st.info("No hay registros en ese rango")
 
 # ------------------- BORRAR TODO -------------------
-st.subheader("Borrar nominas")
+st.subheader("⚠️ Zona peligrosa")
 
 confirmar = st.checkbox("Confirmar eliminación total")
 
