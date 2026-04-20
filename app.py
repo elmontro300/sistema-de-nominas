@@ -101,7 +101,7 @@ else:
     st.info("No hay registros en ese rango")
 
 # ------------------- BORRAR TODO -------------------
-st.subheader("⚠️ Zona peligrosa")
+st.subheader("Borrar nominas")
 
 confirmar = st.checkbox("Confirmar eliminación total")
 
